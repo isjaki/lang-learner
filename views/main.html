@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/css/main.css">
+    <title>LangLearner</title>
+</head>
+<body>
+    <header class="header">
+        <h1>LangLearner Project</h1>
+    </header>
+    <nav class="navigation">
+        <ul class="navigation__list">
+            <li class="navigation__list-item"><a href="/">Add a word</a></li>
+            <li class="navigation__list-item"><a href="/words">Your words</a></li>
+        </ul>
+    </nav>
+    <main class="main">
+        <div class="form-container">
+            <div class="form-title">
+                <h2>Add a new word</h2>
+            </div>
+            <form action="/add-word" method="post" class="form">
+                <div class="form-element">
+                    <div class="form-element__label">
+                        <label for="word">Word:</label>
+                    </div>
+                    <div class="form-element__input">
+                        <input class="text-input" type="text" id="word" name="word" />
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="form-element__label">
+                        <label for="word">Translation:</label>
+                    </div>
+                    <div class="form-element__input">
+                        <input class="text-input" type="text" id="translation" name="translation" />
+                    </div>
+                </div>
+                <div class="radio-group">
+                    <div class="radio-group__label">
+                        <label>Article:</label>
+                    </div>
+                    <div class="radio-group__container">
+                        <div class="radio-group__button">
+                            <input type="radio" name="article" id="der" value="der" />
+                            <label for="der">Der</label>
+                        </div>
+                        <div class="radio-group__button">
+                            <input type="radio" name="article" id="die" value="die" />
+                            <label for="die">Die</label>
+                        </div>
+                        <div class="radio-group__button">
+                            <input type="radio" name="article" id="das" value="das" />
+                            <label for="das">Das</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="select_container">
+                    <div class="select_container__label">
+                        <label for="partOfSpeech">Part of speech:</label>
+                    </div>
+                    <div class="select_container__input">
+                        <select name="partOfSpeech" id="partOfSpeech">
+                            <option value="noun">Noun</option>
+                            <option value="verb">Verb</option>
+                            <option value="adjective">Adjective</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="form-element__label">
+                        <label for="sentence">Example sentence:</label>
+                    </div>
+                    <div class="form-element__input">
+                        <input class="text-input" type="text" id="sentence" name="sentence" />
+                    </div>
+                </div>
+                <button class="submit-button" type="submit">Add to collection</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
