@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/css/main.css">
+    <link rel="stylesheet" href="../public/css/words.css">
+    <title>LangLearner</title>
+</head>
+<body>
+    <header class="header">
+        <h1>LangLearner Project</h1>
+    </header>
+    <nav class="navigation">
+        <ul class="navigation__list">
+            <li class="navigation__list-item"><a href="/">Add a word</a></li>
+            <li class="navigation__list-item"><a href="/words">Your words</a></li>
+        </ul>
+    </nav>
+    <main class="main">
+        <div class="words-list">
+            <% for (const wordInfo of words) { %>
+                <div class="word-preview">
+                    <div class="word-preview__item word-preview__word">
+                        <span><%= `${wordInfo.word}${wordInfo.article ? ', ' : ''}${wordInfo.article ? wordInfo.article : ''}` %></span>
+                    </div>
+                    <div class="word-preview__item word-preview__translation"><%= wordInfo.translation %></div>
+                    <div class="word-preview__item word-preview__btn-container">
+                        <a class="submit-button word-preview__button" href="<%= `/words/${wordInfo.id}` %>">See more</a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </main>
+</body>
+</html>
