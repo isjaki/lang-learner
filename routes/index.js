@@ -1,19 +1,20 @@
-const controller = require('../controllers/index');
+const mainController = require('../controllers/index');
+const wordController = require('../controllers/word');
 
 async function requestHandler(req, res) {
     const url = req.url;
     const method = req.method;
 
     if (url === '/' && method === 'GET') {
-        await controller.getMain(req, res);
+        await mainController.getMain(req, res);
     } else if (url === '/add-word' && method === 'POST') {
-        controller.postAddWord(req, res);
+        wordController.addWord(req, res);
     } else if (url === '/words' && method === 'GET') {
-        await controller.getWords(req, res);
+        await wordController.getWords(req, res);
     } else if (url.includes('css') && method === 'GET') {
-        await controller.getCSS(req, res);
+        await mainController.getCSS(req, res);
     } else {
-        await controller.getPageNotFound(req, res);
+        await mainController.getPageNotFound(req, res);
     }
 }
 
