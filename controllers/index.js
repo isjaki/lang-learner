@@ -1,6 +1,8 @@
 
 const path = require('path');
-const { getHtml } = require('../utils/getHtml');
+const ejs = require('ejs');
+const { v4 } = require('uuid');
+const { getView } = require('../utils/getView.js');
 const { parseRequestBody } = require('../utils/parseRequestBody');
 const { writeToFile } = require('../utils/writeToFile');
 const { getDataFromFile } = require('../utils/getDataFromFile');
@@ -9,7 +11,9 @@ const FILE_PATH = 'data/words.json';
 
 async function getMain(_, res) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.write(await getHtml('main'));
+    const mainView = await getView('main');
+    const renderedMain = ejs.render(mainView);
+    res.write(renderedMain);
     res.end();
 }
 
@@ -20,15 +24,18 @@ function postAddWord(req, res) {
     });
     req.on('end', async () => {
         const bodyString = Buffer.concat(chunks).toString();
-        const userData = parseRequestBody(bodyString);
-        const users = await getDataFromFile(FILE_PATH);
-        if (users === undefined || users === '') {
-            const initUsersList = [userData];
-            await writeToFile(FILE_PATH, JSON.stringify(initUsersList));
+        const wordData = parseRequestBody(bodyString);
+        wordData.id = v4();
+
+        const words = await getDataFromFile(FILE_PATH);
+
+        if (words === undefined || words === '') {
+            const initWordsList = [wordData];
+            await writeToFile(FILE_PATH, JSON.stringify(initWordsList));
         } else {
-            const usersList = JSON.parse(users);
-            const updatedUsers = usersList.concat(userData);
-            await writeToFile(FILE_PATH, JSON.stringify(updatedUsers));
+            const wordsList = JSON.parse(words);
+            const updatedWords = wordsList.concat(wordData);
+            await writeToFile(FILE_PATH, JSON.stringify(updatedWords));
         }
         res.writeHead(303, { 'Location': '/' });
         res.end();
@@ -36,9 +43,18 @@ function postAddWord(req, res) {
 }
 
 async function getWords(_, res) {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.write(await getDataFromFile(FILE_PATH));
-    res.end();
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    const wordsListView = await getView('words');
+    const wordsList = await getDataFromFile(FILE_PATH);
+    try {
+        const parsedWordsList = JSON.parse(wordsList);
+        const renderedWordsList = ejs.render(wordsListView, { words: parsedWordsList });
+        res.write(renderedWordsList);
+    } catch (e) {
+        console.log(e);
+    } finally {
+        res.end();
+    }
 }
 
 async function getCSS(req, res) {
@@ -51,7 +67,9 @@ async function getCSS(req, res) {
 
 async function getPageNotFound(_, res) {
     res.writeHead(404, { 'Content-Type': 'text/html' });
-    res.write(await getHtml('404'));
+    const notFoundView = await getView('404');
+    const renderedNotFound = ejs.render(notFoundView);
+    res.write(renderedNotFound);
     res.end();
 }
 
