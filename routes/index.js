@@ -1,7 +1,7 @@
 const mainController = require('../controllers/index');
 const wordController = require('../controllers/word');
 
-async function requestHandler(req, res) {
+exports.requestHandler = async function(req, res) {
     const url = req.url;
     const method = req.method;
 
@@ -17,7 +17,3 @@ async function requestHandler(req, res) {
         await mainController.getPageNotFound(req, res);
     }
 }
-
-module.exports = {
-    requestHandler,
-};
