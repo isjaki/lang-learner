@@ -6,14 +6,18 @@ body {
 }
 
 .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     font-size: 0.9rem;
+    background-color: white;
 }
 
 .navigation {
-    display: flex;
-    justify-content: center;
     padding-bottom: 20px;
     font-size: 1.2rem;
 }
@@ -44,6 +48,7 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
+    margin-top: 128px;
 }
 
 .form-container {
