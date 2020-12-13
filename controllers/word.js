@@ -26,7 +26,7 @@ exports.addWord = function(req, res) {
             const updatedWords = wordsList.concat(wordData);
             await writeToFile(FILE_PATH, JSON.stringify(updatedWords));
         }
-        res.writeHead(303, { 'Location': '/' });
+        res.writeHead(303, { 'Location': '/words' });
         res.end();
     });
 }
