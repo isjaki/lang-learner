@@ -1,12 +1,26 @@
-require('dotenv').config()
-const http = require('http');
-const { requestHandler } = require('./routes');
+require('dotenv').config();
 
-const hostname = '127.0.0.1';
-const port = 3000;
+const path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-const server = http.createServer(requestHandler);
+const router = require('./routes');
+const { getPageNotFound } = require('./controllers');
+const { PORT, HOSTNAME } = require('./config');
 
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}`);
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', router);
+
+app.use(getPageNotFound);
+
+app.listen(PORT, HOSTNAME, () => {
+    console.log(`Server running at http://${HOSTNAME}:${PORT}`);
 });
