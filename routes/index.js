@@ -8,6 +8,8 @@ router.get('/', mainController.getMain);
 
 router.get('/words', wordController.getWords);
 
+router.get('/words/:id/delete', wordController.deleteWord);
+
 router.post('/add-word', wordController.addWord);
 
 module.exports = router;
