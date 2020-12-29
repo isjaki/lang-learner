@@ -15,7 +15,11 @@ class Word {
     static async getAll() {
         try {
             const wordsList = await getDataFromFile(FILE_PATH);
-            return JSON.parse(wordsList);
+            const parsedWordList = JSON.parse(wordsList);
+            if (parsedWordList === undefined || parsedWordList === '') {
+                return [];
+            }
+            return parsedWordList;
         } catch(e) {
             console.log(e);
         }
@@ -40,13 +44,13 @@ class Word {
                 partOfSpeech: this.partOfSpeech,
                 sentence: this.sentence,
             };
-            const words = await getDataFromFile(FILE_PATH);
-            if (words === undefined || words === '') {
+            const words = await Word.getAll();
+
+            if (words.length === 0) {
                 const initWordsList = [wordData];
                 await writeToFile(FILE_PATH, JSON.stringify(initWordsList));
             } else {
-                const wordsList = JSON.parse(words);
-                const updatedWords = wordsList.concat(wordData);
+                const updatedWords = words.concat(wordData);
                 await writeToFile(FILE_PATH, JSON.stringify(updatedWords));
             }
         } catch (e) {
