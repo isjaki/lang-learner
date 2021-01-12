@@ -25,6 +25,13 @@ class Word {
         }
     }
 
+    static async getById(id) {
+        const words = await Word.getAll();
+
+        const word = words.find(word => word.id === id);
+        return word === undefined ? null : word;
+    }
+
     static async deleteById(id) {
         try {
             const words = await Word.getAll();
