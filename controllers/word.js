@@ -12,6 +12,19 @@ exports.addWord = async function(req, res) {
     res.redirect('/words');
 }
 
+exports.editWord = async function(req, res) {
+    const wordId = req.params.id;
+    const selectedWord = await Word.getById(wordId);
+
+    res.render('edit-word', {
+        word: selectedWord.word,
+        translation: selectedWord.translation,
+        article: selectedWord.article ? selectedWord.article : null,
+        partOfSpeech: selectedWord.partOfSpeech,
+        sentence: selectedWord.sentence,
+    });
+}
+
 exports.deleteWord = async function(req, res) {
     const wordId = req.params.id;
     await Word.deleteById(wordId);

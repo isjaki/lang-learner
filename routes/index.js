@@ -10,6 +10,8 @@ router.get('/words', wordController.getWords);
 
 router.get('/words/:id/delete', wordController.deleteWord);
 
+router.get('/words/:id/edit', wordController.editWord);
+
 router.post('/add-word', wordController.addWord);
 
 module.exports = router;
