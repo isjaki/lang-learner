@@ -6,6 +6,7 @@ exports.addWord = async function(req, res) {
         req.body.translation,
         req.body.partOfSpeech,
         req.body.sentence,
+        req.body.article,
     );
     await word.save();
 
@@ -23,6 +24,10 @@ exports.editWord = async function(req, res) {
         partOfSpeech: selectedWord.partOfSpeech,
         sentence: selectedWord.sentence,
     });
+}
+
+exports.updateWord = async function(req, res) {
+
 }
 
 exports.deleteWord = async function(req, res) {

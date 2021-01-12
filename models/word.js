@@ -4,12 +4,13 @@ const { getDataFromFile } = require('../utils/getDataFromFile');
 const { FILE_PATH } = require('../constants');
 
 class Word {
-    constructor(word, translation, partOfSpeech, sentence) {
+    constructor(word, translation, partOfSpeech, sentence, article) {
         this.id = v4();
         this.word = word;
         this.translation = translation;
         this.partOfSpeech = partOfSpeech;
         this.sentence = sentence;
+        this.article = article ? article : null;
     }
 
     static async getAll() {
@@ -50,6 +51,7 @@ class Word {
                 translation: this.translation,
                 partOfSpeech: this.partOfSpeech,
                 sentence: this.sentence,
+                article: this.article,
             };
             const words = await Word.getAll();
 
