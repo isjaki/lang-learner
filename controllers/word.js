@@ -18,6 +18,7 @@ exports.editWord = async function(req, res) {
     const selectedWord = await Word.getById(wordId);
 
     res.render('edit-word', {
+        wordId: selectedWord.id,
         word: selectedWord.word,
         translation: selectedWord.translation,
         article: selectedWord.article ? selectedWord.article : null,
@@ -27,7 +28,17 @@ exports.editWord = async function(req, res) {
 }
 
 exports.updateWord = async function(req, res) {
+    const wordId = req.params.id;
+    const word = await Word.getById(wordId);
 
+    word.word = req.body.word;
+    word.translation = req.body.translation;
+    word.partOfSpeech = req.body.partOfSpeech;
+    word.sentence = req.body.sentence;
+    word.article = req.body.article ? req.body.article : null;
+
+    await word.save();
+    res.redirect('/words');
 }
 
 exports.deleteWord = async function(req, res) {

@@ -4,8 +4,8 @@ const { getDataFromFile } = require('../utils/getDataFromFile');
 const { FILE_PATH } = require('../constants');
 
 class Word {
-    constructor(word, translation, partOfSpeech, sentence, article) {
-        this.id = v4();
+    constructor(word, translation, partOfSpeech, sentence, article, id) {
+        this.id = id ? id : v4();
         this.word = word;
         this.translation = translation;
         this.partOfSpeech = partOfSpeech;
@@ -26,17 +26,21 @@ class Word {
         }
     }
 
-    static async getById(id) {
+    static async getById(wordId) {
         const words = await Word.getAll();
 
-        const word = words.find(word => word.id === id);
-        return word === undefined ? null : word;
+        const wordData = words.find(word => word.id === wordId);
+        if (wordData === undefined) {
+            return null;
+        }
+        const { word, translation, partOfSpeech, sentence, article, id } = wordData;
+        return new Word(word, translation, partOfSpeech, sentence, article, id);
     }
 
-    static async deleteById(id) {
+    static async deleteById(wordId) {
         try {
             const words = await Word.getAll();
-            const updatedWords = words.filter(word => word.id !== id);
+            const updatedWords = words.filter(word => word.id !== wordId);
             await writeToFile(FILE_PATH, JSON.stringify(updatedWords));
         } catch (e) {
             console.log(e);
@@ -59,7 +63,17 @@ class Word {
                 const initWordsList = [wordData];
                 await writeToFile(FILE_PATH, JSON.stringify(initWordsList));
             } else {
-                const updatedWords = words.concat(wordData);
+                let isWordUpdated = false;
+                let updatedWords = words.map(word => {
+                    if (word.id === wordData.id) {
+                        isWordUpdated = true;
+                        return wordData;
+                    }
+                    return word;
+                });
+                if (!isWordUpdated) {
+                    updatedWords = words.concat(wordData);
+                }
                 await writeToFile(FILE_PATH, JSON.stringify(updatedWords));
             }
         } catch (e) {

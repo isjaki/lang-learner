@@ -14,6 +14,6 @@ router.get('/words/:id/edit', wordController.editWord);
 
 router.post('/add-word', wordController.addWord);
 
-router.post('/update-word', wordController.updateWord);
+router.post('/update-word/:id', wordController.updateWord);
 
 module.exports = router;
