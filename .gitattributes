@@ -1,0 +1,12 @@
+# Normalize line endings to LF on checkin and prevent conversion to CRLF when checking out.
+* text=auto eol=lf
+
+# Graphics
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.tif binary
+*.tiff binary
+*.ico binary
+*.eps binary
