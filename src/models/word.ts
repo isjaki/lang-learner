@@ -12,14 +12,7 @@ export class Word {
         public sentence: string,
         public article: string | null,
         public id: string = v4(),
-    ) {
-        this.title = title;
-        this.translation = translation;
-        this.partOfSpeech = partOfSpeech;
-        this.sentence = sentence;
-        this.article = article;
-        this.id = id;
-    }
+    ) {}
 
     static async getAll() {
         try {
