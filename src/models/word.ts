@@ -1,47 +1,55 @@
-const { v4 } = require('uuid');
-const { writeToFile } = require('../utils/writeToFile');
-const { getDataFromFile } = require('../utils/getDataFromFile');
-const { FILE_PATH } = require('../constants');
+import { v4 } from 'uuid';
+import { writeToFile } from '../utils/write-to-file';
+import { getDataFromFile } from '../utils/get-data-from-file';
+import { WordDTO } from '../typings';
+import { DATA_PATH } from '../constants';
 
-class Word {
-    constructor(word, translation, partOfSpeech, sentence, article, id) {
-        this.id = id ? id : v4();
-        this.word = word;
+export class Word {
+    constructor(
+        public title: string,
+        public translation: string,
+        public partOfSpeech: string,
+        public sentence: string,
+        public article: string | null,
+        public id: string = v4(),
+    ) {
+        this.title = title;
         this.translation = translation;
         this.partOfSpeech = partOfSpeech;
         this.sentence = sentence;
-        this.article = article ? article : null;
+        this.article = article;
+        this.id = id;
     }
 
     static async getAll() {
         try {
-            const wordsList = await getDataFromFile(FILE_PATH);
-            const parsedWordList = JSON.parse(wordsList);
-            if (parsedWordList === undefined || parsedWordList === '') {
+            const wordList = await getDataFromFile(DATA_PATH);
+            if (wordList === undefined) {
                 return [];
             }
+            const parsedWordList: WordDTO[] = JSON.parse(wordList);
             return parsedWordList;
-        } catch(e) {
+        } catch (e) {
             console.log(e);
+            return [];
         }
     }
 
-    static async getById(wordId) {
+    static async getById(wordId: string) {
         const words = await Word.getAll();
-
         const wordData = words.find(word => word.id === wordId);
         if (wordData === undefined) {
             return null;
         }
-        const { word, translation, partOfSpeech, sentence, article, id } = wordData;
-        return new Word(word, translation, partOfSpeech, sentence, article, id);
+        const { title, translation, partOfSpeech, sentence, article, id } = wordData;
+        return new Word(title, translation, partOfSpeech, sentence, article, id);
     }
 
-    static async deleteById(wordId) {
+    static async deleteById(wordId: string) {
         try {
             const words = await Word.getAll();
             const updatedWords = words.filter(word => word.id !== wordId);
-            await writeToFile(FILE_PATH, JSON.stringify(updatedWords));
+            await writeToFile(DATA_PATH, JSON.stringify(updatedWords));
         } catch (e) {
             console.log(e);
         }
@@ -51,7 +59,7 @@ class Word {
         try {
             const wordData = {
                 id: this.id,
-                word: this.word,
+                title: this.title,
                 translation: this.translation,
                 partOfSpeech: this.partOfSpeech,
                 sentence: this.sentence,
@@ -61,7 +69,7 @@ class Word {
 
             if (words.length === 0) {
                 const initWordsList = [wordData];
-                await writeToFile(FILE_PATH, JSON.stringify(initWordsList));
+                await writeToFile(DATA_PATH, JSON.stringify(initWordsList));
             } else {
                 let isWordUpdated = false;
                 let updatedWords = words.map(word => {
@@ -74,12 +82,10 @@ class Word {
                 if (!isWordUpdated) {
                     updatedWords = words.concat(wordData);
                 }
-                await writeToFile(FILE_PATH, JSON.stringify(updatedWords));
+                await writeToFile(DATA_PATH, JSON.stringify(updatedWords));
             }
         } catch (e) {
             console.log(e);
         }
     }
 }
-
-module.exports = Word;

@@ -22,7 +22,7 @@
             <% for (const wordInfo of words) { %>
                 <div class="word-preview">
                     <div class="word-preview__item word-preview__word">
-                        <span><%= `${wordInfo.word}${wordInfo.article ? ', ' : ''}${wordInfo.article ? wordInfo.article : ''}` %></span>
+                        <span><%= `${wordInfo.title}${wordInfo.article ? ', ' : ''}${wordInfo.article ? wordInfo.article : ''}` %></span>
                     </div>
                     <div class="word-preview__item word-preview__translation"><%= wordInfo.translation %></div>
                     <div class="word-preview__item"><%= wordInfo.sentence %></div>
