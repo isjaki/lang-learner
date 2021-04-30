@@ -5,27 +5,20 @@ import { WordDTO } from '../typings';
 import { DATA_PATH } from '../constants';
 
 export class Word {
-    title: string;
-    translation: string;
-    partOfSpeech: string;
-    sentence: string;
-    article: string | null;
-    id: string;
-
     constructor(
-        title: string,
-        translation: string,
-        partOfSpeech: string,
-        sentence: string,
-        article: string | null,
-        id?: string
+        public title: string,
+        public translation: string,
+        public partOfSpeech: string,
+        public sentence: string,
+        public article: string | null,
+        public id: string = v4(),
     ) {
-        this.id = id === undefined ? v4() : id;
-        this.article = article === null ? null : article;
         this.title = title;
         this.translation = translation;
         this.partOfSpeech = partOfSpeech;
         this.sentence = sentence;
+        this.article = article;
+        this.id = id;
     }
 
     static async getAll() {
